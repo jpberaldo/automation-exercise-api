@@ -1,16 +1,11 @@
 package modulos.produto;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.List;
-
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 @DisplayName("Testes de API Rest referentes a pagina de Produto")
@@ -36,5 +31,25 @@ public class ProdutoTest {
 
     }
 
+    @Test
+    @DisplayName("Validar que não seja exibida a lista de produtos, fazendo a requisição com o método POST")
+    public void testValidarQueNaoPermiteRequisicaoPostParaExibirTodosOsProdutos() {
+
+        baseURI = "https://automationexercise.com/";
+        basePath = "api";
+
+        Response listaDeProdutos = given()
+                .when()
+                .post("/productsList")
+                .then()
+                .extract().response();
+
+        System.out.println(listaDeProdutos.asString());
+        String actual = listaDeProdutos.asString();
+        String esperado = "{\"responseCode\": 405, \"message\": \"This request method is not supported.\"}";
+
+        Assertions.assertEquals(esperado, actual);
+
+    }
 
 }
