@@ -52,4 +52,25 @@ public class ProdutoTest {
 
     }
 
+    @Test
+    @DisplayName("Validar que seja exibido a lista com todas as marcas")
+    public void testExibirTodosAsMarcas() {
+
+        baseURI = "https://automationexercise.com/";
+        basePath = "api";
+
+        Response listaDeBrands = given()
+                .when()
+                .get("/brandsList")
+                .then()
+                .statusCode(200)
+                .extract().response();
+
+        System.out.println(listaDeBrands.asString());
+
+        listaDeBrands.then().assertThat().body("brands", not(empty()));
+
+    }
+
+
 }
