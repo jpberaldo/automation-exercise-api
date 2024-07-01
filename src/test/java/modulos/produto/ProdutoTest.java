@@ -72,5 +72,26 @@ public class ProdutoTest {
 
     }
 
+    @Test
+    @DisplayName("Validar que não seja exibida a lista de marcas, fazendo a requisição com o método PUT")
+    public void testValidarQueNaoPermiteRequisicaoPostParaExibirTodosAsMarcas() {
+
+        baseURI = "https://automationexercise.com/";
+        basePath = "api";
+
+        Response listaDeMarcas = given()
+                .when()
+                .put("/brandsList")
+                .then()
+                .extract().response();
+
+        System.out.println(listaDeMarcas.asString());
+        String actual = listaDeMarcas.asString();
+        String esperado = "{\"responseCode\": 405, \"message\": \"This request method is not supported.\"}";
+
+        Assertions.assertEquals(esperado, actual);
+
+    }
+
 
 }
