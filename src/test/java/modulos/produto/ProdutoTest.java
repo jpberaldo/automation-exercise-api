@@ -93,5 +93,25 @@ public class ProdutoTest {
 
     }
 
+    @Test
+    @DisplayName("Validar a não exibição do produto sem o parametro search_product")
+    public void testValidarQueNaoExibeProdutoEspecificoSemParametro(){
+
+        baseURI = "https://automationexercise.com/";
+        basePath = "api";
+
+        Response produto = given()
+                .when()
+                .post("/searchProduct")
+                .then()
+                .extract().response();
+
+        System.out.println(produto.asString());
+        String actual = produto.asString();
+        String esperado = "{\"responseCode\": 400, \"message\": \"Bad request, search_product parameter is missing in POST request.\"}";
+
+        Assertions.assertEquals(esperado, actual);
+
+    }
 
 }
